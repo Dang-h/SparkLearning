@@ -1,0 +1,5 @@
+One, maybe rather trivial, observation is that in mathematics, rational numbers do not have mutable
+state. You can add one rational number to another,  You can add one rational number to another, but the result will be a new rational number. The
+original numbers will not have "changed." The immutable Rational class we'll design in this chapter
+will have the same property. Each rational number will be represented by one Rational object. When
+you add two Rational objects, you'll create a newRational object to hold the sum.

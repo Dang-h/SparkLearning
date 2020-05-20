@@ -1,0 +1,1 @@
+ Hello World  Hello World  Hello Kafka  Hello Scala  Hello Spark Hello Hadoop Hello Hive
