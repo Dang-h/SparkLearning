@@ -40,7 +40,7 @@ object CategoryTop10App {
 			9  order_product_ids 	一次订单中所有商品的 ID 集合	null
 			10 pay_category_ids  	一次支付中所有品类的 ID 集合	1-2-3
 			11 pay_product_ids   	一次支付中所有商品的 ID 集合	1-2-3
-			12 city_id					城市ID						20
+			12 city_id				城市ID						20
 		 */
 		val dataRDD: RDD[String] = sc.textFile("data/project/user_visit_action.csv")
 
