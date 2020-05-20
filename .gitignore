@@ -1,0 +1,6 @@
+# Project exclude paths
+/hdfsExercise/target/
+/scalaExercise/target/
+/sparkExercise/target/
+/hdfsExercise
+/.idea
