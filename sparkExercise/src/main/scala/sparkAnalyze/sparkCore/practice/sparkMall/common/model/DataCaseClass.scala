@@ -17,7 +17,7 @@ package sparkAnalyze.sparkCore.practice.sparkMall.common.model
  * @param pay_product_ids    一次支付中所有商品的 ID 集合
  */
 case class UserVisitAction(date: String,
-						   user_id: Long,
+						   user_id: String,
 						   session_id: String,
 						   page_id: Long,
 						   action_time: String,
@@ -28,10 +28,20 @@ case class UserVisitAction(date: String,
 						   order_product_ids: String,
 						   pay_category_ids: String,
 						   pay_product_ids: String,
-						   city_id: Long)
+						   city_id: String)
 
+/**
+ *
+ * @param taskId		任务id
+ * @param categoryId	Top10品类ID
+ * @param clickCount	Top10点击次数
+ * @param orderCount	Top10下单次数
+ * @param payCount		Top10支付次数
+ */
 case class CategoryTop10(taskId: String,
 						 categoryId: String,
 						 clickCount: Long,
 						 orderCount: Long,
 						 payCount: Long)
+
+case class CategoryTop10SessionTop10(taskId: String, categoryId: String, sessionId: String, clickCount: Long)
