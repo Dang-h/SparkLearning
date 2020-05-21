@@ -8,7 +8,6 @@ import org.apache.spark.{SparkConf, SparkContext}
 import sparkAnalyze.sparkCore.practice.sparkMall.common.model.CategoryTop10
 import sparkAnalyze.sparkCore.practice.sparkMall.common.utils.StrUtil
 
-import scala.collection.immutable.HashMap
 import scala.collection.{immutable, mutable}
 
 object CategoryTop10App4Accumulator {
@@ -45,11 +44,7 @@ object CategoryTop10App4Accumulator {
 		val category2Map: Map[String, mutable.HashMap[String, Long]] = accValue.groupBy {
 			case (k, sum) => k.split("_")(0)
 		}
-		category2Map.take(10).map {
-			case (category, map) => {
-				map.getOrElse(category, "nothing")
-			}
-		}
+
 
 		// 转换为样例类
 		val taskId: String = UUID.randomUUID().toString
@@ -97,7 +92,7 @@ object CategoryTop10App4Accumulator {
 /* 品类数据统计局累加器
 	输入的数据类型：String(用户点击行为的日期,用户的 ID,Session ID,某个页面的 ID,点击行为的时间点,用户搜索的关键词,点击的商品品类的 ID,点击的商品的 ID,一次订单中所有品类的 ID 集合,一次订单中所有商品的 ID 集合,一次支付中所有品类的 ID 集合,一次支付中所有商品的 ID 集合)
 	输出的数据形式：((category_click, 100), (category_pay, 100),...)
-	输出数据类型为mutable.Map[String, Long]以便于后续处理
+	输出数据类型为mutable.HashMap[String, Long]以便于后续处理
  */
 class CategoryAccumulator1 extends AccumulatorV2[String, mutable.HashMap[String, Long]] {
 
