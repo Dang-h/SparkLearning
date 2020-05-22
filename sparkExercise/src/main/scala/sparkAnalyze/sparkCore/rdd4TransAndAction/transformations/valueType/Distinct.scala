@@ -1,17 +1,9 @@
-package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations
+package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations.valueType
 
 import org.apache.spark.{SparkConf, SparkContext}
 
-/**
-  * FUNCTIONAL_DESCRIPTION:
-  * CREATE_BY: 尽际
-  * CREATE_TIME: 2019/2/27 10:00
-  * MODIFICATORY_DESCRIPTION:
-  * MODIFY_BY:
-  * MODIFICATORY_TIME:
-  * VERSION：V1.0
-  */
-object Chapter5_1_1_4 {
+
+object Distinct {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
       .setMaster("local[*]")

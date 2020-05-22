@@ -1,21 +1,12 @@
-package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations
+package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations.valueType
 
 import org.apache.spark.{SparkConf, SparkContext}
 
-/**
-  * FUNCTIONAL_DESCRIPTION:
-  * CREATE_BY: 尽际
-  * CREATE_TIME: 2019/2/27 10:00
-  * MODIFICATORY_DESCRIPTION:
-  * MODIFY_BY:
-  * MODIFICATORY_TIME:
-  * VERSION：V1.0
-  */
-object Chapter5_1_1_5 {
+object MapPartitionsWithIndex {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
       .setMaster("local[*]")
-      .setAppName("Chapter5_1_1_5")
+      .setAppName("Chapter5_1_1_6")
     val sc = new SparkContext(conf)
 
     val rddData = sc.parallelize(
@@ -27,11 +18,11 @@ object Chapter5_1_1_5 {
         ("201800005", 87)),
       2)
 
-    val rddData2 = rddData.mapPartitions(iter => {
+    val rddData2 = rddData.mapPartitionsWithIndex((index, iter) => {
       var result = List[String]()
       while (iter.hasNext) {
         result = iter.next() match {
-          case (id, grade) if grade >= 95 => id + "_" + grade :: result
+          case (id, grade) if grade >= 95 => id + "_" + grade + "[" + index + "]" :: result
           case _ => result
         }
       }
@@ -39,6 +30,7 @@ object Chapter5_1_1_5 {
     })
 
     println(rddData2.collect.mkString(","))
+
 
     sc.stop()
   }

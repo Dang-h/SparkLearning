@@ -1,4 +1,4 @@
-package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations
+package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations.valueType
 
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -11,7 +11,7 @@ import org.apache.spark.{SparkConf, SparkContext}
   * MODIFICATORY_TIME:
   * VERSION：V1.0
   */
-object Chapter5_1_1_10 {
+object Coalesce {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf()
       .setMaster("local[*]")
