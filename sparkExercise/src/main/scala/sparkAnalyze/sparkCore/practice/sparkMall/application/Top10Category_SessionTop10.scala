@@ -170,7 +170,7 @@ object Top10Category_SessionTop10 {
 //		val sessionTop10: Array[CategoryTop10SessionTop10] = top10SessionTop10.flatten
 
 		// 结果保存到MySQL
-		sessionTop10.foreachPartition(datas => {
+		sessionTop10.foreachPartition((datas: Iterator[CategoryTop10SessionTop10]) => {
 			val driver = "com.mysql.jdbc.Driver"
 			val url = "jdbc:mysql://hadoop100:3306/sparkExercise"
 			val userName = "root"
