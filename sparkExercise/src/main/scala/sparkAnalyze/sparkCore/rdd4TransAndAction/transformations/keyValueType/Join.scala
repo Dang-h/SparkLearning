@@ -1,4 +1,4 @@
-package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations.valueValueType
+package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations.keyValueType
 
 import org.apache.spark.{SparkConf, SparkContext}
 
