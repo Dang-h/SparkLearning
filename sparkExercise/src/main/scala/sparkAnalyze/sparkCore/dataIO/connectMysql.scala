@@ -28,24 +28,10 @@ object connectMysql {
 			r => (r.getInt(1), r.getString(2))
 		)
 
-
 		println(rdd.count())
 		rdd.foreach(println)
 
-//		data.foreachPartition(insertData2Mysql)
-
 		sc.stop()
 	}
-
-//	def insertData2Mysql(iterator: Iterator[List[Int, String]]): Unit = {
-//
-//		Class.forName("com.mysql.jdbc.Driver").newInstance()
-//		val connection: Connection = DriverManager.getConnection("jdbc:mysql://hadoop100:3306/test", "root", "mysql")
-//		iterator.foreach(data => {
-//			val ps: PreparedStatement = connection.prepareStatement("insert into test(id,name) values (?,?)")
-//			ps.setString(1, data.)
-//			ps.executeUpdate()
-//		})
-//	}
 
 }
