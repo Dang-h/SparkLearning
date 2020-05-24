@@ -1,12 +1,16 @@
 # SparkLearning
 spark学习，spark练习，spark项目实战
 
-## SparkCore
-
-### 知识点
-
+## 知识点
+### SparkCore
 - [算子的使用](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/算子的使用.md) 
 
+### SparkSQL
+- [DataFrame和Dataset的相互转换、创建及数据输出](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/CreateDF_DS.scala)
+    - 通过序列集合创建DataFrame
+    - 自定义schema创建DataFrame
+    - 读取MySQL中的数据到DataFrame
+    - 输出数据到MySQL
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala)
 
