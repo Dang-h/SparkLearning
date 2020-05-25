@@ -11,6 +11,10 @@ spark学习，spark练习，spark项目实战
     - 自定义schema创建DataFrame
     - 读取MySQL中的数据到DataFrame
     - 输出数据到MySQL
+- ["一进一出"-UDF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDF.scala)
+- ["一进多出"-UDTF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDTF.scala)
+- ["多进一出"-UDAF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDAF.scala)
+
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala)
 
@@ -21,6 +25,7 @@ spark学习，spark练习，spark项目实战
 		1516609143869 9 4 75 18
 		1516609143869 1 7 87 12
 ```
+***
 ### 用户访问日志分析
 日志格式：
 
@@ -49,34 +54,47 @@ spark学习，spark练习，spark项目实战
 - [页面平均停留时间TOP10统计](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/sparkMall/application/PageAvgAccessTime.scala)
 
 - [指定页面的单跳转率](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/sparkMall/application/PageFlow.scala)
+***
+### [订单分析](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/orderAnalyze/sql.scala)
+数据说明
 
-### [成绩单分析]
-数据格式：班级|姓名|年龄|性别|科目|成绩
-题目：
-- 读取文件的数据test.txt
-- 一共有多少个小于20岁的人参加考试？
-- 一共有多少个等于20岁的人参加考试？
-- 一共有多少个大于20岁的人参加考试？
-- 一共有多个男生参加考试？
-- 一共有多少个女生参加考试？
-- 12班有多少人参加考试？
-- 13班有多少人参加考试？
-- 语文科目的平均成绩是多少？
--  数学科目的平均成绩是多少？
--  英语科目的平均成绩是多少？
--  每个人平均成绩是多少？
--  12班平均成绩是多少？
--  12班男生平均总成绩是多少？
--  12班女生平均总成绩是多少？
--  13班平均成绩是多少？
--  13班男生平均总成绩是多少？
--  13班女生平均总成绩是多少？
--  全校语文成绩最高分是多少？
--  12班语文成绩最低分是多少？
--  13班数学最高成绩是多少？
--  总成绩大于150分的12班的女生有几个？
--  总成绩大于150分，且数学大于等于70，且年龄大于等于19岁的学生的平均成绩是多少？
+tbDate:
 
+|字段|类型|说明|
+|:---|:---|:---|
+|dateid|date|日期|
+|years|varchar|年月|
+|theyear|varchar|年|
+|month|varchar|月|
+|day|varchar|日|
+|weekday|varchar|周几|
+|week|varchar|第几周|
+|quarter|varchar|季度|
+|period|varchar|旬|
+|halfmonth|varchar|半月|
+
+tbStockDetail:
+
+|字段|类型|说明|
+|:---|:---|:---|
+|ordernumber|varchar|订单号|
+|rownum|varchar|行号|
+|itemid|varchar|货号|
+|number|varchar|数量|
+|price|varchar|单价|
+|amount|int|销售额|
+
+tbStock
+
+|字段|类型|说明|
+|:---|:---|:---|
+|ordernumber|varchar|订单号|
+|locationid|varchar|交易位置|
+|dateid|date|交易日期|
+- 计算所有订单中每年的销售单数、销售总额
+- 计算所有订单每年最大金额订单的销售额
+- 计算所有订单中每年最畅销货品
+***
 ### 评论日志分析
 日志格式：
 
