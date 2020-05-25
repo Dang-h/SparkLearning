@@ -1,0 +1,5 @@
+Alice, 20, Female
+Tom, 18, Male
+Boris, 30, Male
+Tom, 12, Male
+Jerry, 12, Female
