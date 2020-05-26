@@ -19,7 +19,7 @@ object ClickTop3 {
 		val sc = new SparkContext(conf)
 
 		// 2 读取数据生成RDD：TS, province, City, User, Ad
-		val inputDate: RDD[String] = sc.textFile("D:\\Develop\\Coding\\offerGoExercise\\data\\practice\\agent.log")
+		val inputDate: RDD[String] = sc.textFile("data/practice/agent.log")
 
 		// 3 对数据进心切分，按照最小粒度聚合，((Province,Ad),1)
 		val provinceAd2One = inputDate.map { line =>

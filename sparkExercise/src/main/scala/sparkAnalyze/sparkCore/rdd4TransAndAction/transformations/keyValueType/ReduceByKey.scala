@@ -1,5 +1,6 @@
 package sparkAnalyze.sparkCore.rdd4TransAndAction.transformations.keyValueType
 
+import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
 object ReduceByKey {
@@ -16,7 +17,7 @@ object ReduceByKey {
         ("Thomas", 100),
         ("Catalina", 77),
         ("Karen", 87)), 2)
-    val rddData2 = rddData1.map({
+    val rddData2: RDD[(String, Int)] = rddData1.map({
       case (_, grade) if grade <= 60 => ("C", 1)
       case (_, grade) if grade > 60 && grade < 80 => ("B", 1)
       case (_, grade) if grade >= 80 => ("A", 1)
