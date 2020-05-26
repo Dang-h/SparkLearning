@@ -42,6 +42,13 @@
             <version>${spark.version}</version>
         </dependency>
 
+        <!-- 引入SparkStreaming依赖 -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+
         <!-- 添加自己的Hadoop版本 -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
