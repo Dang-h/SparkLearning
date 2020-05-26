@@ -18,16 +18,26 @@ spark学习，spark练习，spark项目实战
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala)
 
+***
 - [统计出每一个省份广告被点击次数的 TOP3](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/ClickTop3.scala)
-```
-数据结构：时间戳，省份，城市，用户，广告，中间字段使用空格分割。
-		1516609143867 6 7 64 16
-		1516609143869 9 4 75 18
-		1516609143869 1 7 87 12
-```
+
+[数据格式](data/practice/agent.log)
+
+时间戳，省份，城市，用户，广告(中间字段使用空格分割)。
+***
+### [成绩单分析](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/Report.scala)
+
+[数据格式](data/practice/data.txt)
+
+姓名、课程、分数
+
+需求：
+- 求每名同学选修的课程数
+- 求各门课程的平均分
+- 使用累加器求DataBase课程的选修人数
 ***
 ### 用户访问日志分析
-日志格式：
+[日志格式](data/project/user_visit_action.csv)
 
 |字段名称|说明|
 |:---|:---|
@@ -56,9 +66,9 @@ spark学习，spark练习，spark项目实战
 - [指定页面的单跳转率](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/sparkMall/application/PageFlow.scala)
 ***
 ### [订单分析](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/orderAnalyze/sql.scala)
-数据说明
+数据格式
 
-tbDate:
+[tbDate](data/practice/tbDate.txt)
 
 |字段|类型|说明|
 |:---|:---|:---|
@@ -73,7 +83,7 @@ tbDate:
 |period|varchar|旬|
 |halfmonth|varchar|半月|
 
-tbStockDetail:
+[tbStockDetail](data/practice/tbStockDetail.txt)
 
 |字段|类型|说明|
 |:---|:---|:---|
@@ -84,13 +94,15 @@ tbStockDetail:
 |price|varchar|单价|
 |amount|int|销售额|
 
-tbStock
+[tbStock](data/practice/tbStock.txt)
 
 |字段|类型|说明|
 |:---|:---|:---|
 |ordernumber|varchar|订单号|
 |locationid|varchar|交易位置|
 |dateid|date|交易日期|
+
+需求：
 - 计算所有订单中每年的销售单数、销售总额
 - 计算所有订单每年最大金额订单的销售额
 - 计算所有订单中每年最畅销货品
