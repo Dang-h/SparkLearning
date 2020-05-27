@@ -15,6 +15,13 @@ spark学习，spark练习，spark项目实战
 - ["一进多出"-UDTF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDTF.scala)
 - ["多进一出"-UDAF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDAF.scala)
 
+### SparkStreaming
+
+- 读取数据到DStream
+    - [读取HDFS文件夹中的数据](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadHDFSFile.scala)
+    - [读取RDD组成的数据队列](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadRDD.scala)
+    - [读取Flume中的数据]
+
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala)
 
