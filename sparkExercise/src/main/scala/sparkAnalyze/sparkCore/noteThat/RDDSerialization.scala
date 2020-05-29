@@ -8,7 +8,7 @@ object RDDSerialization {
 		val conf: SparkConf = new SparkConf().setMaster("local[*]").setAppName("wordCount_RDDSer")
 		val sc = new SparkContext(conf)
 
-		val inputRdd: RDD[String] = sc.parallelize(Array("hadoop", "spark", "hive", "Serialization"))
+		val inputRdd: RDD[String] = sc.parallelize(Array("hadoop", "org/apache/spark", "hive", "Serialization"))
 		val search = new Search("hadoop")
 
 
