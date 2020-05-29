@@ -56,6 +56,20 @@
             <version>${spark.version}</version>
         </dependency>
 
+        <!--引入Kafka依赖-->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-kafka_2.11</artifactId>
+            <version>1.6.3</version>
+            <!-- 排除spark-streaming-kafka_2.11中的lz4的依赖，以spark中的为主 -->
+            <exclusions>
+                <exclusion>
+                    <groupId>net.jpountz.lz4</groupId>
+                    <artifactId>lz4</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
         <!-- 添加自己的Hadoop版本 -->
         <dependency>
             <groupId>org.apache.hadoop</groupId>
