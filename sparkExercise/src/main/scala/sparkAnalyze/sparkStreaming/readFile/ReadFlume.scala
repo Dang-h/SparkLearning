@@ -1,5 +1,10 @@
 package sparkAnalyze.sparkStreaming.readFile
 
+import java.net.InetSocketAddress
+
+import org.apache.spark.storage.StorageLevel
+import org.apache.spark.streaming.dstream.ReceiverInputDStream
+import org.apache.spark.streaming.flume.{FlumeUtils, SparkFlumeEvent}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.{SparkConf, SparkContext}
 
@@ -13,6 +18,19 @@ object ReadFlume {
 		val sc = new SparkContext(conf)
 		val ssc = new StreamingContext(sc, Seconds(3))
 
+		// 端口未知，卒
+		val flumeAddress = Seq(new InetSocketAddress("hadoop100", 44444))
+		val flumeEventDStream: ReceiverInputDStream[SparkFlumeEvent] = FlumeUtils.createPollingStream(
+			ssc,
+			flumeAddress,
+			StorageLevel.MEMORY_AND_DISK_SER_2)
 
+		val flumeDStream = flumeEventDStream.map(s => new String(s.event.getBody.array()))
+		val uidDStream = flumeDStream.map(u => (u.split(",")(0), 1))
+		val uidCount = uidDStream.reduceByKey(_ + _)
+		uidCount.print()
+
+		ssc.start()
+		ssc.awaitTermination()
 	}
 }
