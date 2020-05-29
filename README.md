@@ -20,8 +20,9 @@ spark学习，spark练习，spark项目实战
 - 读取数据到DStream
     - [读取HDFS文件夹中的数据](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadHDFSFile.scala)
     - [读取RDD组成的数据队列](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadRDD.scala)
-    - [读取Flume中的数据]
-
+    - ~~读取Flume中的数据~~
+    - [读取Kafka中的数据`自动维护偏移量`](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadKafka.scala)
+    - [**读取Kafka中数据** **`手动维护偏移量`**](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadKafka1.scala)
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala)
 
