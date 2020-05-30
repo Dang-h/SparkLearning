@@ -4,6 +4,11 @@ spark学习，spark练习，spark项目实战
 ## 知识点
 ### SparkCore
 - [算子的使用](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/算子的使用.md) 
+- 累加器
+    > 一种共享变量机制;每一个task会被分配到不同的节点（进程）中执行，可通过累加器将多个节点中的数据累加到同一变量中
+    - [longAccumulator](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/rdd4Advance/AccumulatorTest1.scala):长整、双精度浮点累加器
+    - [collectionAccumulator](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/rdd4Advance/AccumulatorTest2.scala):集合累加器
+    - [自定义累加器](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/rdd4Advance/AccumulatorCustomer.scala)
 
 ### SparkSQL
 - [DataFrame和Dataset的相互转换、创建及数据输出](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/CreateDF_DS.scala)
@@ -22,10 +27,67 @@ spark学习，spark练习，spark项目实战
     - [读取RDD组成的数据队列](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadRDD.scala)
     - ~~读取Flume中的数据~~
     - [读取Kafka中的数据`自动维护偏移量`](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadKafka.scala)
-    - [**读取Kafka中数据** **`手动维护偏移量`**](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadKafka1.scala)
+    - [**读取Kafka中数据** `手动维护偏移量`](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadKafka1.scala)
+ - [时间概念](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/timeDuration/TimeDuration.scala)
+    - 批处理间隔（Batch Duration）
+    - 窗口时间宽度（Window Duration）
+    - 滑动时间宽度（Slide Duration）
+ - DStream基础转换操作
+    
+    |基础转换操作|说明|
+    |:---|:---|
+    |map(f)|遍历DStream中每一个元素，并应用f操作|
+    |flatMap(f)|拆散；与map类似，但f返回的是一个集合|
+    |filter(f)|返回DStream中满足f过滤条件的元素|
+    |repartition(num)|通过改变分区数来改变运行的并行度|
+    |union(other)|求两个DStream的并集|
+    |[join(other, [num])](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/dsTreamOpration/Join.scala)|将两个DStream(K,V)进行join，并返回一个新的DStream(K,(V,w))|
+    |cogroup(other,[num])|将两个DStream(K,V)进行group，并返回一个DStream(K,Seq[V],Seq[W])|
+    |count()|统计当前DStream中每个RDD中的元素数量（`count`在RDD中为`Action`算子）|
+    |reduce(f)|将2个DStream中的每个RDD中的元素通过f进行聚合|
+    |countByValue()|统计DStream（K）中每个元素出现的频次，并返回DStream(K, Long)|
+    |[transform(f)](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/dsTreamOpration/Transform.scala)|将当前DStream中某种类型的RDD通过f(在`Driver`中)转换成另一种类型，并封装到新的RDD中；一般用于对RDD直接进行操作|
+    |[updateStateByKey(f)](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCount1.scala)|`有状态`转换。通过将Key原始状态与新状态通过f中定义的方式进行更新。可用于对某个统计变量进行`全局持续的累加`。|
+    
+ - 窗口转换操作
+    
+    |窗口转换操作|说明|
+    |:---|:---|
+    |window(wLength, slideInterval)|wLength:窗口时间宽度；slideInterval:滑动时间宽度；将原始DStream中的多个RDD按照窗口规则进行分组，并将每组RDD合并成一个RDD，存放在新的DStream中|
+    |countByWindow(wLength,slideInterval)|返回窗口内RDD中元素的数量|
+    |reduceByWindow(f,wLength,slideInterval)|在DStream中对窗口中的元素按照f进行`聚合`，并返回一个新的DStream|
+    |[reduceByKeyAndWindow(f,wLength,slideInterval)](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/timeDuration/TimeDuration.scala)|在（K，V）类型的DStream中，对窗口中的元素按照f进行`聚合`，并返回一个新的DStream|
+    |[reduceByKeyAndWindow(f,wLength,slideInterval,[num])](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/timeDuration/TimeDuration.scala)|`有状态`转换操作；reduceByKeyAndWindow的重载形式；|
+    |countByValueAndWindow(wLength,slideInterval,[num])|统计窗口中DStream(K)内每个元素出现的频次，并返回DStream((K,Long))|
+    
+ - 输出操作
+    
+    |输出操作|说明|
+    |:---|:---|
+    |print()|在`Driver`进程中打印DStream中每个批次前10个元素。多用于调试|
+    |saveAsTextFiles(prefix,[suffix])|将DStream中的数据保存到文件，可指定前后缀|
+    |saveAsObjectFiles(prefix,[suffix])|将DStream中数据以对象形式保存到文件系统，数据序列化为SequenceFile|
+    |saveHadoopFiles(prefix,[suffix])|将DStream中数据保存到Hadoop中|
+    |[foreachRDD(f)](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/dsTreamOpration/ForeachRDD.scala)|遍历DStream中每一个RDD，并对RDD执行f操作；f操作在`Driver`进程中调用；不要在foreachRDD中进行数据分析|
+    
+ - [checkpoint](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/dsTreamOpration/CheckPoint.scala)
+   > 通过checkpoint对数据进行备份，以便从故障中恢复
+   - 分类
+        - 元数据检查点
+   			> 在Driver进程中恢复程序
+   			- SparkConf相关信息
+   			- DStream相关操作，如：转换和输出
+   			- 队列等待处理的Job
+   		- 数据检查点
+   			- 实质上时RDD检查点
+   			- `有状态转换`中会定期自动设置检查点，以切断上游的依赖
+ - [累加器和广播变量](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCountAccumulator.scala)
+ 
+ ***
 ## Spark小练习
-- [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala)
-
+- [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala) (`SparkCore`)读取指定文件，并统计文件单词个数
+- [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCount1.scala) `有状态转换`做`全局`词频统计
+- [wordCount] 实现一个[`累加器`](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCountAccumulator.scala) ，并结合`无状态转换`操作，实现实时`全局`词频统计
 ***
 - [统计出每一个省份广告被点击次数的 TOP3](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/ClickTop3.scala)
 
