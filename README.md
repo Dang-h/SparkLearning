@@ -82,7 +82,7 @@ spark学习，spark练习，spark项目实战
    			- 实质上时RDD检查点
    			- `有状态转换`中会定期自动设置检查点，以切断上游的依赖
  - [累加器和广播变量](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCountAccumulator.scala)
- 
+ - [优雅的关闭SparkStreaming](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/dsTreamOpration/StopStreaming.scala)
  ***
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala) (`SparkCore`)读取指定文件，并统计文件单词个数
