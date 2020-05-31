@@ -2,25 +2,24 @@
 spark学习，spark练习，spark项目实战
 
 ## 知识点
-### SparkCore
+### Spark Core
 - [算子的使用](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/算子的使用.md) 
 - 累加器
     > 一种共享变量机制;每一个task会被分配到不同的节点（进程）中执行，可通过累加器将多个节点中的数据累加到同一变量中
     - [longAccumulator](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/rdd4Advance/AccumulatorTest1.scala):长整、双精度浮点累加器
     - [collectionAccumulator](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/rdd4Advance/AccumulatorTest2.scala):集合累加器
     - [自定义累加器](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/rdd4Advance/AccumulatorCustomer.scala)
-
-### SparkSQL
+### Spark SQL
 - [DataFrame和Dataset的相互转换、创建及数据输出](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/CreateDF_DS.scala)
     - 通过序列集合创建DataFrame
     - 自定义schema创建DataFrame
     - 读取MySQL中的数据到DataFrame
-    - 输出数据到MySQL
+    - [输出数据到MySQL](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/sparkMall/application/Top10Category_SessionTop10.scala)
 - ["一进一出"-UDF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDF.scala)
 - ["一进多出"-UDTF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDTF.scala)
 - ["多进一出"-UDAF](sparkExercise/src/main/scala/sparkAnalyze/sparkSQL/UDAF.scala)
 
-### SparkStreaming
+### Spark Streaming
 
 - 读取数据到DStream
     - [读取HDFS文件夹中的数据](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/readFile/ReadHDFSFile.scala)
@@ -83,11 +82,46 @@ spark学习，spark练习，spark项目实战
    			- `有状态转换`中会定期自动设置检查点，以切断上游的依赖
  - [累加器和广播变量](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCountAccumulator.scala)
  - [优雅的关闭SparkStreaming](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/dsTreamOpration/StopStreaming.scala)
+ 
+ ### Structured Streaming
+ > Spark2.x系列版本引入的特性。降低了数据处理的延迟。支持再数据去重的同时，又实现了”有且只有一次“（`Exactly Once`）语义，可以保障数据被精准一次消费
+>与SparkStreaming不同的是：StructuredStreaming构建在SparkSQL引擎之上，将数据以增量的方式连续地读取到DataFrame和Dataset中并且可以像使用静态的（static）DataFrame和Dataset一样来分析数据
+>**”有且仅有一次“语义是通过Checkpoint机制和预写入日志（WALs）机制实现的**
+
+### **优化**
+#### 优化Spark程序
+
+- 尽可能减少或避免出现shuffle过程
+- 使用Kryo作为序列化方案
+- 尽可能批量操作数据
+- 合理设置分区数
+- 合理设置批处理间隔
+#### 优化数据
+
+- 使用自定义Partitioner缓解数据倾斜
+- 提前补齐维度数据
+#### 优化资源
+|属性|默认值|说明|
+|:---|:---|:---|
+|spark.driver.cores|1|用于设置Driver进程数，仅在Cluster模式下有效。一般默认即可|
+|spark.driver.memory|1G|用于设置Driver进程可用内存<br>尽量不要通过SparkConf方式来设置（无法生效），而是通过--driver-memory方式进行设置|
+|spark.executor.cores|在YARN模式下，默认为1；<br>在Standalone模式下默认为：尽可能多|用于设置Executor进程可用Core内核数。<br>该设置会决定每个Executor中Task的并行度，一般2—6，不能超过CPU可用内核总数的一半（提交程序时可通过--total-executor-cores来指定）|
+|spark.executor.memory|1G|用以设置每个Executor进程可用内存。一般情况为4-12G|
+|spark.executor.instances|自动分配|用于设置当前应用程序开启Executor的个数<br>应尽量保证**分区数 ≥ Executor个数 × 每个Executor核心数**（提交程序书通过--num-executor进行设置）|
+|spark.default.parallelism|动态分配|用于设置RDD默认分区数（并行度）<br>如果未显示的配置，则以**父RDD**中最大分区数为准<br>使用sc.parallelize操作读取数据，若未设置分区数，则分区数取决于数据块个数。通常**建议按照集群中每个CPU内核处理2~3个分区来设置并行度**|
+|spark.memory.useLegacyMode|false|
+|spark.shuffle.memoryFraction|0.2
+|spark.storage.memoryFraction|0.6
+|spark.storage.unrollFraction|0.2
+|spark.memory.fraction|0.6
+|spark.memory.storageFraction|0.5|
  ***
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala) (`SparkCore`)读取指定文件，并统计文件单词个数
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCount1.scala) `有状态转换`做`全局`词频统计
-- [wordCount] 实现一个[`累加器`](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCountAccumulator.scala) ，并结合`无状态转换`操作，实现实时`全局`词频统计
+- [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCount2.scala) 实现一个[`累加器`](sparkExercise/src/main/scala/sparkAnalyze/sparkStreaming/WordCountAccumulator.scala
+) ，并结合`无状态转换`操作，实现实时`全局`词频统计
+- [wordCount] 使用`Structured Streaming`实时统计用户输入的单词个数
 ***
 - [统计出每一个省份广告被点击次数的 TOP3](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/ClickTop3.scala)
 

@@ -37,11 +37,13 @@ object CreateDF_DS {
 			StructField("age", IntegerType, true),
 			StructField("sex", StringType, true)
 		))
+
 		// 实例化一个Java的List集合，泛型为Row
 		val javaList = new util.ArrayList[Row]()
 		javaList.add(Row("Alice", 20, "Female"))
 		javaList.add(Row("Tom", 18, "Male"))
 		javaList.add(Row("Boris", 30, "Male"))
+
 		val dfFromCustomSchema: DataFrame = spark.createDataFrame(javaList, schema)
 		dfFromCustomSchema.show()
 
@@ -70,6 +72,7 @@ object CreateDF_DS {
 		val properties = new java.util.Properties()
 		properties.setProperty("user", "root")
 		properties.setProperty("password", "mysql")
+
 		// 写入模式有4种：Overwrite:覆写；Append：追加；Ignore：不存在则创建，存在则忽略；ErrorIfExists：存在则抛异常
 		dfFromList.write.mode(SaveMode.Overwrite).jdbc("jdbc:mysql://hadoop100:3306/sparkExercise", "sparkSQLTest", properties)
 

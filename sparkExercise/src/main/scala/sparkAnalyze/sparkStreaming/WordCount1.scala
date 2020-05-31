@@ -31,7 +31,7 @@ object WordCount1 {
 		}
 
 		// 偏应用函数
-		val func: Iterator[(String, Seq[Int], Option[Int])] => Iterator[(String, Int)] = updateStateFunc _
+		val func: Iterator[(String, Seq[Int], Option[Int])] => Iterator[(String, Int)] = updateStateFunc
 
 		val wordMap: DStream[(String, Int)] = lineDStream.flatMap(_.split(" ")).map(x => (x, 1))
 
