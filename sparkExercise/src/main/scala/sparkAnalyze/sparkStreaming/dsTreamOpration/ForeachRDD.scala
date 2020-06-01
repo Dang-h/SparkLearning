@@ -16,16 +16,16 @@ object ForeachRDD {
 		val lineDStream: ReceiverInputDStream[String] = ssc.socketTextStream("hadoop100", 9999)
 		val resultDStream: DStream[Array[String]] = lineDStream.map(_.split(",")).filter(_.length == 4)
 
-		resultDStream.foreachRDD(rdd =>{
+		resultDStream.foreachRDD(rdd => {
 			// 在Executor中执行
-			rdd.foreachPartition(p =>{
+			rdd.foreachPartition(p => {
 				val conn: Connection = ConnectionPool.getConnection()
 				val statement: PreparedStatement = conn.prepareStatement(
 					"INSERT INTO syllabus.t_car_position (`plate_num`, `longitude`, `latitude`, `timestamp`) VALUES (?, " +
 					  "?, ?, ?);")
 				// Executor中执行
-				p.foreach(result =>{
-					statement.setString(1,result(0))
+				p.foreach(result => {
+					statement.setString(1, result(0))
 					statement.setFloat(2, result(1).toFloat)
 					statement.setFloat(3, result(2).toFloat)
 					statement.setLong(4, result(3).toLong)
