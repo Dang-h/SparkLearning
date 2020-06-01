@@ -109,12 +109,27 @@ spark学习，spark练习，spark项目实战
 |spark.executor.memory|1G|用以设置每个Executor进程可用内存。一般情况为4-12G|
 |spark.executor.instances|自动分配|用于设置当前应用程序开启Executor的个数<br>应尽量保证**分区数 ≥ Executor个数 × 每个Executor核心数**（提交程序书通过--num-executor进行设置）|
 |spark.default.parallelism|动态分配|用于设置RDD默认分区数（并行度）<br>如果未显示的配置，则以**父RDD**中最大分区数为准<br>使用sc.parallelize操作读取数据，若未设置分区数，则分区数取决于数据块个数。通常**建议按照集群中每个CPU内核处理2~3个分区来设置并行度**|
-|spark.memory.useLegacyMode|false|
-|spark.shuffle.memoryFraction|0.2
-|spark.storage.memoryFraction|0.6
-|spark.storage.unrollFraction|0.2
-|spark.memory.fraction|0.6
-|spark.memory.storageFraction|0.5|
+|spark.memory.useLegacyMode|false|用于设置是否使用旧版本得内存划分机制|
+|spark.shuffle.memoryFraction|0.2|20%内存用来存储Shuffle数据|
+|spark.storage.memoryFraction|0.6|60%的内存缓存RDD|
+|spark.storage.unrollFraction|0.2|20%内存存储其他数据|
+|spark.memory.fraction|0.6|默认为0.6表示将当前Executor中60%呢内存空间用于计算和缓存数据，剩余40%用于存储其他的数据|
+|spark.memory.storageFraction|0.5||
+
+### 提交Spark程序的参数规范
+|参数|解释|备注|
+|:---|:---|:---|
+|--class|Spark程序中包含的主类函数||
+|--master|Spark程序运行模式|local[*],spark://hadoop100:7077（多个地址用`，`隔开）,Yarn|
+|--deploy-mode|Spark程序运行的方式|client、cluster|
+|--driver-memory|每一个Driver进程的内存||
+|--executor-memory|每一个Executor进程可用内存||
+|--executor-cores|每一个Executor进程可用CPU核数||
+|--total-executor-cores|所有Executor进程可用总CPU核数||
+|<application-jar>|程序对应的jar包路径||
+|[application-argument]|该程序主方法所接受的参数||
+
+### [**Spark Shuffle解析以及内存管理**]
  ***
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala) (`SparkCore`)读取指定文件，并统计文件单词个数
