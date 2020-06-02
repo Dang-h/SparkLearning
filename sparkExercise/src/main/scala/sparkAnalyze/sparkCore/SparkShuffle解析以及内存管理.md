@@ -61,14 +61,10 @@
  
 	![未经优化的HashShuffleManager](assert/未经优化的HashShuffleManager.png)
 2. 优化后的HadShuffleManager
-- 为了优化`HashShuffleManager`我们可以设置一个参数，`spark.shuffle.consolidateFiles`，该参数**默认值为`false`**，将其设置为true
-即可开启优化机制，**通常来说，如果我们使用HashShuffleManager，那么都建议开启这个选项。**
-开启`consolidate`机制之后，在`shuffleWrite`过程中，task就不是为下游stage的每个task创建一个磁盘文件了，此时会出现**`shuffleFileGroup`**的概念，**每个shuffleFileGroup
-会对应一批磁盘文件，磁盘文件的数量与下游stage的task数量是相同的**。一个Executor上有多少个CPUCore，就可以并行执行多少个task。而**第一批并行执行的每个task都会创建一个`shuffleFileGroup
-`，并将数据写入对应的磁盘文件内**。
+- 为了优化`HashShuffleManager`我们可以设置一个参数，`spark.shuffle.consolidateFiles`，该**参数默认值为`false`** ，将其设置为true
+即可开启优化机制，**通常来说，如果我们使用HashShuffleManager，那么都建议开启这个选项。** 开启`consolidate`机制之后，在`shuffleWrite`过程中，task就不是为下游stage的每个task创建一个磁盘文件了，此时会出现 **`shuffleFileGroup`** 的概念，**每个shuffleFileGroup会对应一批磁盘文件，磁盘文件的数量与下游stage的task数量是相同的**。一个Executor上有多少个CPUCore，就可以并行执行多少个task。而**第一批并行执行的每个task都会创建一个`shuffleFileGroup`，并将数据写入对应的磁盘文件内**。
 - 当`Executor`的CPUCore执行完一批task，接着执行下一批task时，**下一批task就会复用之前已有的`shuffleFileGroup`，包括其中的磁盘文件**，也就是说，此时task
-会将数据写入已有的磁盘文件中，而不会写入新的磁盘文件中。因此，**consolidate机制允许不同的task复用同一批磁盘文件**，这样就**可以有效将多个task
-的磁盘文件进行一定程度上的合并**，从而大幅度减少磁盘文件的数量，进而提升shuffleWrite的性能。
+会将数据写入已有的磁盘文件中，而不会写入新的磁盘文件中。因此，**consolidate机制允许不同的task复用同一批磁盘文件**，这样就**可以有效将多个task的磁盘文件进行一定程度上的合并**，从而大幅度减少磁盘文件的数量，进而提升shuffleWrite的性能。
 - 假设第二个stage有100个task，第一个stage有50个task，总共还是有10个Executor（ExecutorCPU个数为1），每个Executor执行5个task
 。那么原本使用`未经优化的HashShuffleManager`时，每个Executor会产生500个磁盘文件，所有Executor会产生5000个磁盘文件的。但是此时经过优化之后，每个Executor
 创建的磁盘文件的数量的计算公式为：**`CPUCore的数量*下一个stage的task数量`**，也就是说，每个Executor此时只会创建100个磁盘文件，所有Executor只会创建1000个磁盘文件。
