@@ -129,7 +129,7 @@ spark学习，spark练习，spark项目实战
 |<application-jar>|程序对应的jar包路径||
 |[application-argument]|该程序主方法所接受的参数||
 
-### [**Spark Shuffle解析以及内存管理**]
+### [**Spark Shuffle解析以及内存管理**](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/Spark Shuffle解析以及内存管理.md)
  ***
 ## Spark小练习
 - [wordCount](sparkExercise/src/main/scala/sparkAnalyze/sparkCore/practice/WordCount.scala) (`SparkCore`)读取指定文件，并统计文件单词个数
